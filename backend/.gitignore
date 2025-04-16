@@ -1,0 +1,61 @@
+# 字节编译 / 优化 / DLL 文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 单元测试 / 覆盖率测试报告
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# 环境变量文件
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEA 相关文件
+.idea
+.vscode
+*.swp
+*.swo
+
+# 项目特定文件
+logs/
+*.log
+.DS_Store
+
+# 数据库相关
+*.sqlite3
+*.db
+
+# 本地开发配置
+local_settings.py
+settings_local.py 
