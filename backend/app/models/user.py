@@ -13,6 +13,10 @@ class User(BaseModel):
     phone = fields.CharField(max_length=20, null=True)
     is_active = fields.BooleanField(default=True)
     
+    # 通知关系 - 需要在导入Notification模型后再关联
+    sent_notifications = fields.ReverseRelation["Notification"]
+    received_notifications = fields.ReverseRelation["Notification"]
+    
     class Meta:
         table = "users"
     

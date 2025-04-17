@@ -5,9 +5,15 @@ from app.core.config import settings
 from app.core.logging import setup_logging
 from app.api.v1.api import api_router
 from app.db.init_db import init_db, close_db_connections
+from app.middleware import setup_middlewares
 
 # 设置日志
-logger = setup_logging(log_level="DEBUG")
+logger = setup_logging(
+    log_level=settings.LOG_LEVEL,
+    log_to_file=True,
+    rotation="00:00",  # 每天午夜轮转日志
+    retention="30 days"  # 保留30天的日志
+)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -75,9 +81,20 @@ app = FastAPI(
         {
             "name": "成绩分析",
             "description": "成绩数据分析和统计接口"
+        },
+        {
+            "name": "系统设置",
+            "description": "系统配置和设置管理"
+        },
+        {
+            "name": "通知管理",
+            "description": "系统通知和消息管理"
         }
     ]
 )
+
+# 设置中间件
+setup_middlewares(app, log_bodies=settings.DEBUG)
 
 # 设置CORS
 app.add_middleware(

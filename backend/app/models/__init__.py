@@ -9,6 +9,8 @@ TORTOISE_MODELS = [
     "app.models.exam",
     "app.models.score",
     "app.models.analytics",
+    "app.models.setting",
+    "app.models.notification",
 ]
 
 # 避免在此处导入模型类，防止循环引用

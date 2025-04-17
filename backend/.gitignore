@@ -51,6 +51,7 @@ venv.bak/
 logs/
 *.log
 .DS_Store
+openapi.json
 
 # 数据库相关
 *.sqlite3

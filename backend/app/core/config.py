@@ -1,4 +1,5 @@
 import secrets
+import os
 from typing import Any, Dict, List, Optional, Union
 
 from pydantic import AnyHttpUrl, EmailStr, field_validator
@@ -24,6 +25,17 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "教务管理系统"
     SENTRY_DSN: Optional[str] = None
+    
+    # 环境配置
+    DEBUG: bool = False
+    ENVIRONMENT: str = "production"  # production, development, testing
+    
+    # 日志配置
+    LOG_LEVEL: str = "INFO"
+    LOG_DIR: Optional[str] = None  # 默认为backend/logs
+    LOG_ROTATION: str = "00:00"  # 每天午夜轮转
+    LOG_RETENTION: str = "30 days"  # 保留30天
+    LOG_FORMAT: str = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
 
     # 数据库配置 - 支持直接提供DATABASE_URL或单独的连接参数
     DATABASE_URL: Optional[str] = None
@@ -63,6 +75,16 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: Optional[str] = None
     EMAILS_FROM_EMAIL: Optional[EmailStr] = None
     EMAILS_FROM_NAME: Optional[str] = None
+    
+    def __init__(self, **data: Any):
+        super().__init__(**data)
+        # 设置环境相关默认值
+        if self.ENVIRONMENT == "development":
+            self.DEBUG = True
+            self.LOG_LEVEL = "DEBUG"
+        elif self.ENVIRONMENT == "testing":
+            self.DEBUG = True
+            self.LOG_LEVEL = "DEBUG"
 
     class Config:
         case_sensitive = True
