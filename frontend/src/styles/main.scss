@@ -1,0 +1,209 @@
+@use 'variables' as *;
+@use 'responsive';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-size: $font-size-base;
+  line-height: 1.5;
+}
+
+#app {
+  height: 100%;
+}
+
+// 全局加载遮罩
+.global-loading-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  
+  .loading-text {
+    margin-top: 1rem;
+    color: $primary-color;
+    font-size: 16px;
+  }
+}
+
+// 页面通用样式
+.page-container {
+  padding: 20px;
+  
+  @include responsive.respond-to-max(sm) {
+    padding: 10px;
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    @include responsive.respond-to-max(sm) {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      .header-title {
+        margin-bottom: 15px;
+      }
+      
+      .header-actions {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        .el-button {
+          margin-bottom: 10px;
+          margin-left: 0;
+        }
+      }
+    }
+    
+    h1, h2, h3 {
+      margin: 0;
+    }
+  }
+  
+  .filter-card {
+    margin-bottom: 20px;
+    
+    .filter-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      
+      @include responsive.respond-to-max(sm) {
+        flex-direction: column;
+        
+        .el-form-item {
+          margin-right: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+  
+  .data-card {
+    margin-bottom: 20px;
+  }
+  
+  .pagination-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    
+    @include responsive.respond-to-max(sm) {
+      justify-content: center;
+    }
+  }
+}
+
+// 表单通用样式
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  
+  .form-divider {
+    margin: 24px 0;
+  }
+  
+  .form-footer {
+    margin-top: 30px;
+    text-align: right;
+    
+    @include responsive.respond-to-max(sm) {
+      text-align: center;
+      
+      .el-button {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-left: 0 !important;
+      }
+    }
+  }
+}
+
+// 卡片内容通用样式
+.card-content {
+  padding: 15px;
+  
+  &.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// 数据统计卡片
+.stat-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+  
+  .stat-card {
+    flex: 1;
+    min-width: 200px;
+    
+    @include responsive.respond-to-max(sm) {
+      min-width: 100%;
+    }
+    
+    .inner {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .stat-icon {
+        font-size: 36px;
+        color: $primary-color;
+      }
+      
+      .stat-info {
+        text-align: right;
+        
+        .stat-value {
+          font-size: 24px;
+          font-weight: bold;
+          line-height: 1.2;
+        }
+        
+        .stat-title {
+          color: $text-color-secondary;
+          font-size: 14px;
+        }
+      }
+    }
+    
+    &.primary .stat-icon {
+      color: $primary-color;
+    }
+    
+    &.success .stat-icon {
+      color: $success-color;
+    }
+    
+    &.warning .stat-icon {
+      color: $warning-color;
+    }
+    
+    &.danger .stat-icon {
+      color: $danger-color;
+    }
+  }
+} 

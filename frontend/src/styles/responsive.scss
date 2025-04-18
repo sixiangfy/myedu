@@ -1,0 +1,279 @@
+// 断点变量
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// 媒体查询混合宏
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "未知的断点: #{$breakpoint}";
+  }
+}
+
+// 最大宽度媒体查询混合宏
+@mixin respond-to-max($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint) - 1) {
+      @content;
+    }
+  } @else {
+    @warn "未知的断点: #{$breakpoint}";
+  }
+}
+
+// 响应式容器
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include respond-to(sm) {
+    max-width: 540px;
+  }
+
+  @include respond-to(md) {
+    max-width: 720px;
+  }
+
+  @include respond-to(lg) {
+    max-width: 960px;
+  }
+
+  @include respond-to(xl) {
+    max-width: 1140px;
+  }
+
+  @include respond-to(xxl) {
+    max-width: 1320px;
+  }
+}
+
+// 网格系统
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+// 列
+.col {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  flex-grow: 1;
+}
+
+// 响应式列宽度
+@each $breakpoint, $width in $breakpoints {
+  @for $i from 1 through 12 {
+    .col-#{$breakpoint}-#{$i} {
+      @include respond-to($breakpoint) {
+        flex: 0 0 percentage($i / 12);
+        max-width: percentage($i / 12);
+      }
+    }
+  }
+}
+
+// 响应式显示类
+@each $breakpoint, $width in $breakpoints {
+  .d-#{$breakpoint}-none {
+    @include respond-to($breakpoint) {
+      display: none !important;
+    }
+  }
+
+  .d-#{$breakpoint}-block {
+    @include respond-to($breakpoint) {
+      display: block !important;
+    }
+  }
+
+  .d-#{$breakpoint}-flex {
+    @include respond-to($breakpoint) {
+      display: flex !important;
+    }
+  }
+}
+
+// 移动优先类
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+// 响应式文本对齐
+@each $breakpoint, $width in $breakpoints {
+  .text-#{$breakpoint}-left {
+    @include respond-to($breakpoint) {
+      text-align: left !important;
+    }
+  }
+
+  .text-#{$breakpoint}-center {
+    @include respond-to($breakpoint) {
+      text-align: center !important;
+    }
+  }
+
+  .text-#{$breakpoint}-right {
+    @include respond-to($breakpoint) {
+      text-align: right !important;
+    }
+  }
+}
+
+// 基础文本对齐
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+// 响应式边距和内边距
+$spacers: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 1rem,
+  4: 1.5rem,
+  5: 3rem
+);
+
+@each $breakpoint, $width in $breakpoints {
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    @each $size, $value in $spacers {
+      // 所有边
+      .#{$abbrev}-#{$breakpoint}-#{$size} {
+        @include respond-to($breakpoint) {
+          #{$prop}: $value !important;
+        }
+      }
+      
+      // 各个方向
+      @each $direction, $dir-abbrev in (top: t, right: r, bottom: b, left: l) {
+        .#{$abbrev}#{$dir-abbrev}-#{$breakpoint}-#{$size} {
+          @include respond-to($breakpoint) {
+            #{$prop}-#{$direction}: $value !important;
+          }
+        }
+      }
+      
+      // 水平和垂直
+      .#{$abbrev}x-#{$breakpoint}-#{$size} {
+        @include respond-to($breakpoint) {
+          #{$prop}-right: $value !important;
+          #{$prop}-left: $value !important;
+        }
+      }
+      
+      .#{$abbrev}y-#{$breakpoint}-#{$size} {
+        @include respond-to($breakpoint) {
+          #{$prop}-top: $value !important;
+          #{$prop}-bottom: $value !important;
+        }
+      }
+    }
+  }
+}
+
+// 移动设备适配工具类
+.mobile-only {
+  @include respond-to(md) {
+    display: none !important;
+  }
+}
+
+.desktop-only {
+  display: none !important;
+  @include respond-to(md) {
+    display: block !important;
+  }
+}
+
+.desktop-flex-only {
+  display: none !important;
+  @include respond-to(md) {
+    display: flex !important;
+  }
+}
+
+// 响应式工具栏
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  
+  @include respond-to-max(sm) {
+    flex-direction: column;
+    
+    .el-button, .el-input {
+      width: 100%;
+    }
+  }
+}
+
+// 响应式表格布局
+.responsive-table {
+  @include respond-to-max(md) {
+    .el-table {
+      &__header {
+        display: none;
+      }
+      
+      &__body {
+        tr {
+          display: block;
+          margin-bottom: 1rem;
+          border: 1px solid #EBEEF5;
+          border-radius: 4px;
+        }
+        
+        td {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          text-align: right;
+          border-bottom: none;
+          
+          &:before {
+            content: attr(data-label);
+            font-weight: bold;
+            text-align: left;
+            margin-right: 1rem;
+          }
+          
+          &:not(:last-child) {
+            border-bottom: 1px solid #EBEEF5;
+          }
+        }
+      }
+    }
+  }
+} 
